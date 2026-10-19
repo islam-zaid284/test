@@ -1,7 +1,6 @@
 # HEXA LOTUS frontend
 
-An independent React and Vite website for the HEXA LOTUS project. It is kept
-separate from the existing backend project and runs without a backend service.
+An independent React and Vite website for the HEXA LOTUS project. It is kept separate from the backend project and can run without a backend service.
 
 ## Run locally
 
@@ -10,24 +9,16 @@ npm install
 npm run dev
 ```
 
-Open the local URL printed by Vite. Create a local `.env` file from
-`.env.example` and set `VITE_API_BASE_URL` only when the backend is ready to be
-connected. The current pages do not make API requests.
+Open the local URL printed by Vite. Create a local `.env` file from `.env.example` and set `VITE_API_BASE_URL` only when the backend is ready to be connected.
 
 ## Pages
 
-- `/` — project overview and current workflow
-- `/project` — Planet X project objective and verified backend foundation
-- `/team` — project team and roles
-- `/telescope` — telescope overview and future 3D model area
+- `/` — project introduction, Planet X challenge, and current workflow
+- `/telescope` — interactive 3D telescope and Arduino-style concept models
+- `/ai-model` — future AI roadmap and NASA/JPL SPHEREx sky-map reference
+- `/team` — team roles and completed project work
 
-## Project information used
-
-The existing project documentation describes PNG/JPEG image uploads and
-analysis-record APIs. It also states that the backend does not currently run an
-AI model. The available project files do not document a telescope model, live
-telescope feed, observation dataset, Planet X finding, or telescope
-specifications. The site labels these items as future or unavailable.
+The telescope and Arduino-style models are illustrative website concepts, not verified hardware specifications. The SPHEREx image is a NASA/JPL reference, not a HEXA LOTUS observation or AI result. Existing project documentation describes PNG/JPEG uploads and analysis records; it states that the backend does not currently run an AI model.
 
 ## Build
 
@@ -35,7 +26,3 @@ specifications. The site labels these items as future or unavailable.
 npm run build
 npm run preview
 ```
-
-The telescope visualization component uses a clearly labeled static concept
-illustration. It is organized as a separate component so a real local GLB/GLTF
-asset can be integrated later.

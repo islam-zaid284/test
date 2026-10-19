@@ -10,12 +10,13 @@ export default function Footer() {
             <span className="brand-mark" aria-hidden="true"><i /><i /><i /><i /><b /></span>
             <span className="brand-name">HEXA <em>LOTUS</em></span>
           </Link>
-          <p className="footer-copy">A student project exploring observation, imagery, and the outer solar system.</p>
+          <p className="footer-copy">A student project exploring astronomical images and the search for Planet X.</p>
         </div>
         <div className="footer-links">
-          <Link to="/project">Project <ArrowUpRight size={13} /></Link>
-          <Link to="/team">Team <ArrowUpRight size={13} /></Link>
+          <Link to="/">Home <ArrowUpRight size={13} /></Link>
           <Link to="/telescope">Telescope <ArrowUpRight size={13} /></Link>
+          <Link to="/ai-model">AI Model <ArrowUpRight size={13} /></Link>
+          <Link to="/team">Team <ArrowUpRight size={13} /></Link>
         </div>
       </div>
       <div className="footer-bottom">

@@ -1,57 +1,192 @@
-import { ArrowDownRight, Box, Orbit } from "lucide-react";
+import { useEffect, useRef, useState } from "react";
+import * as THREE from "three";
+import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 
-/**
- * Integration seam for a future local GLB/GLTF telescope asset.
- * The current artwork is a static illustration and deliberately has no fake controls.
- */
-export default function TelescopeModel() {
+function makeMaterial(color, options = {}) {
+  return new THREE.MeshStandardMaterial({ color, roughness: 0.48, metalness: 0.28, ...options });
+}
+
+function addBox(parent, size, position, material, rotation = [0, 0, 0]) {
+  const mesh = new THREE.Mesh(new THREE.BoxGeometry(...size), material);
+  mesh.position.set(...position);
+  mesh.rotation.set(...rotation);
+  mesh.castShadow = true;
+  mesh.receiveShadow = true;
+  parent.add(mesh);
+  return mesh;
+}
+
+function addCylinder(parent, radiusTop, radiusBottom, length, position, material, rotation = [0, 0, 0]) {
+  const mesh = new THREE.Mesh(new THREE.CylinderGeometry(radiusTop, radiusBottom, length, 32), material);
+  mesh.position.set(...position);
+  mesh.rotation.set(...rotation);
+  mesh.castShadow = true;
+  mesh.receiveShadow = true;
+  parent.add(mesh);
+  return mesh;
+}
+
+function addRod(parent, start, end, radius, material) {
+  const a = new THREE.Vector3(...start);
+  const b = new THREE.Vector3(...end);
+  const direction = new THREE.Vector3().subVectors(b, a);
+  const rod = new THREE.Mesh(new THREE.CylinderGeometry(radius, radius, direction.length(), 12), material);
+  rod.position.copy(a).add(b).multiplyScalar(0.5);
+  rod.quaternion.setFromUnitVectors(new THREE.Vector3(0, 1, 0), direction.normalize());
+  rod.castShadow = true;
+  parent.add(rod);
+  return rod;
+}
+
+function makeTelescope() {
+  const group = new THREE.Group();
+  const tube = makeMaterial("#476a7b", { metalness: 0.62, roughness: 0.3 });
+  const trim = makeMaterial("#c1d5d4", { metalness: 0.78, roughness: 0.24 });
+  const dark = makeMaterial("#17242e", { metalness: 0.58, roughness: 0.36 });
+  const glass = makeMaterial("#76d0df", { metalness: 0.34, roughness: 0.15, transparent: true, opacity: 0.72 });
+  const gold = makeMaterial("#c8a878", { metalness: 0.72, roughness: 0.32 });
+
+  // Illustrative optical tube, focuser, lens, and mount; proportions are not a measured telescope design.
+  addCylinder(group, 0.57, 0.57, 3.45, [0, 0.76, 0], tube, [0, 0, Math.PI / 2]);
+  addCylinder(group, 0.6, 0.6, 0.12, [1.75, 0.76, 0], trim, [0, 0, Math.PI / 2]);
+  addCylinder(group, 0.5, 0.5, 0.035, [1.83, 0.76, 0], glass, [0, 0, Math.PI / 2]);
+  addCylinder(group, 0.6, 0.6, 0.12, [-1.75, 0.76, 0], dark, [0, 0, Math.PI / 2]);
+  addCylinder(group, 0.18, 0.18, 0.38, [-0.98, 1.34, 0], dark);
+  addCylinder(group, 0.13, 0.13, 0.16, [-0.98, 1.59, 0], trim);
+  addBox(group, [0.55, 0.14, 0.3], [-0.98, 1.08, 0], gold);
+
+  addCylinder(group, 0.72, 0.8, 0.24, [0, -0.13, 0], dark);
+  addCylinder(group, 0.36, 0.42, 0.85, [0, -0.62, 0], trim);
+  addCylinder(group, 0.52, 0.64, 0.18, [0, -1.08, 0], dark);
+  addRod(group, [0, -1.06, 0], [-1.05, -2.52, 0.78], 0.072, trim);
+  addRod(group, [0, -1.06, 0], [1.05, -2.52, 0.78], 0.072, trim);
+  addRod(group, [0, -1.06, 0], [0, -2.52, -1.12], 0.072, trim);
+  addRod(group, [-0.46, -1.55, 0.34], [0.46, -1.55, 0.34], 0.045, gold);
+  addRod(group, [0.43, -0.12, 0], [0.43, 0.45, 0], 0.09, gold);
+  addRod(group, [-0.43, -0.12, 0], [-0.43, 0.45, 0], 0.09, gold);
+  return group;
+}
+
+function makeArduino() {
+  const group = new THREE.Group();
+  const pcb = makeMaterial("#147c68", { metalness: 0.12, roughness: 0.7 });
+  const dark = makeMaterial("#111820", { metalness: 0.35, roughness: 0.42 });
+  const silver = makeMaterial("#b9c7ca", { metalness: 0.8, roughness: 0.26 });
+  const gold = makeMaterial("#d6b65e", { metalness: 0.78, roughness: 0.3 });
+  const blue = makeMaterial("#277eae", { metalness: 0.38, roughness: 0.38 });
+
+  // Arduino Uno-style educational concept model, not an exact board revision or wiring diagram.
+  addBox(group, [3.8, 0.16, 2.35], [0, 0, 0], pcb);
+  addBox(group, [0.94, 0.48, 0.72], [-0.48, 0.3, 0.1], dark);
+  addBox(group, [0.42, 0.32, 0.42], [0.55, 0.25, -0.08], dark);
+  addBox(group, [0.35, 0.23, 0.31], [-1.53, 0.19, -0.38], blue);
+  addBox(group, [0.48, 0.4, 0.76], [1.89, 0.16, 0], silver);
+  addBox(group, [0.35, 0.25, 0.52], [-1.9, 0.12, 0.48], dark);
+  addBox(group, [0.13, 0.1, 0.13], [1.18, 0.2, 0.54], gold);
+  addBox(group, [0.13, 0.1, 0.13], [1.48, 0.2, 0.54], gold);
+
+  for (let i = 0; i < 14; i += 1) {
+    const x = -1.52 + i * 0.235;
+    addBox(group, [0.08, 0.12, 0.14], [x, 0.12, -1.02], gold);
+    addBox(group, [0.08, 0.12, 0.14], [x, 0.12, 1.02], gold);
+  }
+  for (let i = 0; i < 6; i += 1) {
+    const z = -0.58 + i * 0.235;
+    addBox(group, [0.14, 0.12, 0.08], [-1.78, 0.12, z], gold);
+  }
+  for (const [x, z] of [[-1.68, -0.86], [1.68, -0.86], [-1.68, 0.86], [1.68, 0.86]]) {
+    addCylinder(group, 0.105, 0.105, 0.035, [x, 0.095, z], gold);
+    addCylinder(group, 0.056, 0.056, 0.04, [x, 0.12, z], makeMaterial("#0b1420"));
+  }
+  return group;
+}
+
+export default function TelescopeModel({ modelType }) {
+  const mountRef = useRef(null);
+  const [unavailable, setUnavailable] = useState(false);
+
+  useEffect(() => {
+    const host = mountRef.current;
+    if (!host) return undefined;
+
+    let renderer;
+    let controls;
+    let observer;
+    let model;
+    let disposed = false;
+    let failureTimer;
+    const scene = new THREE.Scene();
+    const camera = new THREE.PerspectiveCamera(38, 1, 0.1, 100);
+    camera.position.set(4.7, 3.3, 6.6);
+    camera.lookAt(0, 0, 0);
+    scene.add(new THREE.HemisphereLight("#e2f4f4", "#17222d", 2.1));
+    const keyLight = new THREE.DirectionalLight("#fff1d4", 3.1);
+    keyLight.position.set(4, 7, 5);
+    scene.add(keyLight);
+    const fillLight = new THREE.DirectionalLight("#70d4df", 1.8);
+    fillLight.position.set(-5, 2, -4);
+    scene.add(fillLight);
+
+    try {
+      renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+      renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
+      renderer.outputColorSpace = THREE.SRGBColorSpace;
+      renderer.toneMapping = THREE.ACESFilmicToneMapping;
+      renderer.toneMappingExposure = 1.1;
+      host.replaceChildren(renderer.domElement);
+
+      model = modelType === "arduino" ? makeArduino() : makeTelescope();
+      scene.add(model);
+      controls = new OrbitControls(camera, renderer.domElement);
+      controls.enableDamping = true;
+      controls.dampingFactor = 0.08;
+      controls.minDistance = 4.2;
+      controls.maxDistance = 12;
+      controls.maxPolarAngle = Math.PI * 0.82;
+      controls.target.set(0, 0, 0);
+      const render = () => {
+        if (!disposed) renderer.render(scene, camera);
+      };
+      controls.addEventListener("change", render);
+      observer = new ResizeObserver(() => {
+        if (!renderer || !host.clientWidth || !host.clientHeight) return;
+        camera.aspect = host.clientWidth / host.clientHeight;
+        camera.updateProjectionMatrix();
+        renderer.setSize(host.clientWidth, host.clientHeight);
+        render();
+      });
+      observer.observe(host);
+      camera.aspect = (host.clientWidth || 1) / (host.clientHeight || 1);
+      camera.updateProjectionMatrix();
+      renderer.setSize(host.clientWidth || 720, host.clientHeight || 460);
+      render();
+    } catch {
+      failureTimer = window.setTimeout(() => {
+        if (!disposed) setUnavailable(true);
+      }, 0);
+      renderer?.dispose();
+    }
+
+    return () => {
+      disposed = true;
+      window.clearTimeout(failureTimer);
+      observer?.disconnect();
+      controls?.dispose();
+      model?.traverse((item) => {
+        if (item.geometry) item.geometry.dispose();
+        if (item.material) {
+          const materials = Array.isArray(item.material) ? item.material : [item.material];
+          materials.forEach((material) => material.dispose());
+        }
+      });
+      renderer?.dispose();
+      if (host) host.replaceChildren();
+    };
+  }, [modelType]);
+
   return (
-    <section className="model-stage" aria-labelledby="model-stage-title">
-      <div className="model-stage-grid" aria-hidden="true" />
-      <div className="model-stage-orbit orbit-one" aria-hidden="true" />
-      <div className="model-stage-orbit orbit-two" aria-hidden="true" />
-      <div className="model-stage-topline">
-        <span><Orbit size={14} /> VISUALIZATION BAY</span>
-        <span className="model-pill"><span className="status-dot muted" /> MODEL NOT CONNECTED</span>
-      </div>
-      <div className="telescope-art-wrap" role="img" aria-label="Illustrative line drawing of an astronomical telescope. This is a static placeholder, not a real telescope model.">
-        <svg className="telescope-art" viewBox="0 0 620 410" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-          <defs>
-            <linearGradient id="tube" x1="189" y1="130" x2="404" y2="242" gradientUnits="userSpaceOnUse">
-              <stop stopColor="#ADC7D1" /><stop offset=".3" stopColor="#506B7A" /><stop offset=".55" stopColor="#203747" /><stop offset="1" stopColor="#87B7C4" />
-            </linearGradient>
-            <linearGradient id="gold" x1="313" y1="213" x2="349" y2="282" gradientUnits="userSpaceOnUse">
-              <stop stopColor="#E9C795" /><stop offset="1" stopColor="#7D6651" />
-            </linearGradient>
-            <radialGradient id="lens" cx="0" cy="0" r="1" gradientTransform="matrix(0 85 -54 0 420 193)" gradientUnits="userSpaceOnUse">
-              <stop stopColor="#A4F1ED" stopOpacity=".58" /><stop offset=".72" stopColor="#4A91A0" stopOpacity=".24" /><stop offset="1" stopColor="#183340" />
-            </radialGradient>
-            <filter id="glow" x="91" y="50" width="430" height="340" filterUnits="userSpaceOnUse"><feGaussianBlur stdDeviation="20" /></filter>
-          </defs>
-          <ellipse cx="317" cy="213" rx="140" ry="55" fill="#83D3D3" fillOpacity=".15" filter="url(#glow)" />
-          <path d="M222 221 326 275l98-56-104-58-98 60Z" fill="#101922" stroke="#69808A" strokeWidth="2" />
-          <path d="m323 249-4 75m-90-59-41 73m185-75 43 74" stroke="#76909A" strokeWidth="6" strokeLinecap="round" />
-          <path d="m279 267-4 57m-81 14h177m-85 0 34 0" stroke="#334955" strokeWidth="8" strokeLinecap="round" />
-          <path d="m174 127 189 103 64-37-190-105-63 39Z" fill="url(#tube)" stroke="#BED1D6" strokeOpacity=".55" strokeWidth="2" />
-          <path d="m174 127 2 43 188 105-1-45" fill="#263D4A" stroke="#85A3AD" strokeWidth="2" />
-          <path d="m363 230 64-37 3 42-65 40-2-45Z" fill="#1B2D38" stroke="#9DB8BF" strokeWidth="2" />
-          <path d="m426 193 50 28-1 38-45 16" fill="url(#lens)" stroke="#B4E4E3" strokeOpacity=".78" strokeWidth="2" />
-          <path d="m192 123 62-37 48 26-65 38-45-27Z" fill="#182A35" stroke="#AAC0C5" strokeWidth="2" />
-          <path d="m254 86 15 9v42l-15-8V86Zm47 26 14 9v43l-15-8v-44Z" fill="url(#gold)" stroke="#E3C296" strokeOpacity=".6" strokeWidth="1.5" />
-          <path d="m304 170 20-12m23 59 21-13m-164-77 9 5m116 94 8 5" stroke="#D9E9E7" strokeOpacity=".55" strokeWidth="3" strokeLinecap="round" />
-          <path d="m222 262 97 56 94-55" stroke="#B4CDD2" strokeOpacity=".25" strokeDasharray="3 8" />
-          <circle cx="118" cy="86" r="2" fill="#E4D5B4"/><circle cx="488" cy="116" r="2" fill="#9FE0E1"/><circle cx="462" cy="314" r="1.5" fill="#E4D5B4"/>
-          <path d="M102 178h24m-12-12v24m378 64h18m-9-9v18" stroke="#B1D3D5" strokeOpacity=".5" />
-        </svg>
-      </div>
-      <div className="model-stage-bottom">
-        <div>
-          <span className="micro-label">PLACEHOLDER RENDER</span>
-          <h3 id="model-stage-title">The 3D bay is ready for its first instrument.</h3>
-        </div>
-        <p><Box size={15} /> Static concept illustration<br /><span>No model asset or telescope controls are connected.</span></p>
-      </div>
-      <div className="model-stage-corner" aria-hidden="true"><ArrowDownRight size={17} /></div>
-    </section>
+    <div className="three-model-host" ref={mountRef} role="img" aria-label={modelType === "arduino" ? "Interactive illustrative 3D model of an Arduino-style circuit board" : "Interactive illustrative 3D model of a telescope on a tripod"}>
+      {unavailable && <div className="webgl-fallback">3D preview is unavailable in this browser. The project description is shown below.</div>}
+    </div>
   );
 }

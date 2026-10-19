@@ -342,3 +342,144 @@ button { font: inherit; }
   .reveal { opacity: 1; transform: none; }
   .star-cursor { display: none; }
 }
+
+/* Four-page HEXA LOTUS story */
+.challenge-section { border-block: 1px solid var(--line); background: linear-gradient(115deg, rgba(14, 22, 32, .68), rgba(10, 15, 23, .36)); }
+.challenge-grid { display: grid; grid-template-columns: .85fr 1.15fr; align-items: center; gap: clamp(40px, 8vw, 112px); }
+.challenge-heading h2, .ai-intro-grid h2 { margin: 20px 0 17px; color: #e1e7e1; font: 400 clamp(34px, 4vw, 48px)/1.12 var(--serif); letter-spacing: -.025em; }
+.challenge-heading > p:last-child { max-width: 420px; color: #9da7ab; font-size: 12px; line-height: 1.8; }
+.challenge-panel { padding: 26px 28px; border: 1px solid rgba(163, 204, 201, .2); background: rgba(7, 13, 20, .7); box-shadow: 0 18px 70px rgba(0, 0, 0, .16); }
+.challenge-panel-top { display: flex; align-items: center; gap: 10px; color: #9dd2cb; font: 8px ui-monospace, SFMono-Regular, Consolas, monospace; letter-spacing: .14em; }
+.challenge-panel > p { max-width: 640px; margin: 25px 0; color: #e1e6df; font: 400 clamp(21px, 2.8vw, 31px)/1.45 var(--serif); }
+.challenge-divider { height: 1px; background: rgba(194, 211, 222, .11); }
+.challenge-facts { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; padding-top: 20px; }
+.challenge-facts > div { display: flex; flex-direction: column; gap: 8px; }
+.challenge-facts span { color: #849394; font: 7px ui-monospace, SFMono-Regular, Consolas, monospace; letter-spacing: .11em; }
+.challenge-facts strong { color: #bcc9c5; font-size: 10px; font-weight: 450; line-height: 1.6; }
+
+/* Interactive concept model viewer */
+.model-stage { height: 560px; }
+.model-tabs { position: absolute; z-index: 4; top: 65px; left: 25px; display: flex; gap: 7px; }
+.model-tab { display: inline-flex; align-items: center; justify-content: center; gap: 8px; min-height: 35px; padding: 0 13px; border: 1px solid rgba(174, 205, 205, .15); color: #8e9e9f; background: rgba(9, 15, 23, .82); cursor: pointer; font: 8px ui-monospace, SFMono-Regular, Consolas, monospace; letter-spacing: .05em; transition: border-color .2s ease, color .2s ease, background .2s ease; }
+.model-tab:hover, .model-tab.active { border-color: rgba(155, 218, 208, .47); color: #c5e4dc; background: rgba(31, 62, 65, .72); }
+.three-model-host { position: absolute; z-index: 2; inset: 101px 4.5% 106px; }
+.three-model-host canvas { display: block; width: 100%; height: 100%; outline: none; touch-action: none; }
+.webgl-fallback { position: absolute; inset: 25% 10%; display: grid; place-items: center; padding: 25px; border: 1px solid var(--line); color: #b5c3c0; background: rgba(7, 12, 20, .88); text-align: center; font-size: 12px; line-height: 1.7; }
+.viewer-controls { position: absolute; z-index: 4; right: 26px; bottom: 75px; display: flex; align-items: center; gap: 8px; color: #859796; font: 8px ui-monospace, SFMono-Regular, Consolas, monospace; letter-spacing: .04em; }
+.viewer-controls svg { color: #a4d6d0; }
+.viewer-controls svg:last-child { margin-left: 4px; }
+.viewer-divider { color: #667375; }
+.model-stage-bottom { z-index: 4; inset: auto 26px 20px; }
+.model-stage-bottom > p { display: grid; grid-template-columns: 19px auto; column-gap: 8px; align-items: start; }
+.model-bottom-icon { grid-row: span 2; color: #9cd2cb; }
+.model-bottom-icon svg { display: block; }
+.model-stage-bottom > p > span:last-child { grid-column: 2; }
+
+/* NASA / JPL reference image and AI status */
+.ai-cosmos-hero { position: relative; isolation: isolate; min-height: 610px; display: flex; align-items: center; overflow: hidden; border-bottom: 1px solid var(--line); background: #071019; }
+.ai-cosmos-image { position: absolute; z-index: -2; inset: 0; background-image: url("https://d2pn8kiwq2w21t.cloudfront.net/original_images/e1a-SPHEREx_all_sky_stars_and_gas-dust.jpg"); background-size: cover; background-position: center 43%; transform: scale(1.015); }
+.ai-cosmos-shade { position: absolute; z-index: -1; inset: 0; background: linear-gradient(90deg, rgba(5, 9, 17, .96) 0%, rgba(5, 10, 17, .84) 34%, rgba(7, 12, 20, .42) 66%, rgba(6, 10, 18, .22) 100%), linear-gradient(0deg, rgba(6, 10, 17, .78), transparent 30%, rgba(6, 10, 17, .12)); }
+.ai-cosmos-content { padding-block: 100px 85px; }
+.ai-cosmos-content h1 { margin: 24px 0 17px; color: #edf0e7; font: 400 clamp(54px, 7vw, 86px)/.98 var(--serif); letter-spacing: -.04em; }
+.ai-cosmos-content h1 span { color: #b4d8d2; font-style: italic; }
+.ai-cosmos-content .hero-description { max-width: 550px; color: #c0c7c6; }
+.ai-status-chip { display: inline-flex; align-items: center; gap: 9px; margin-top: 20px; padding: 11px 13px; border: 1px solid rgba(204, 195, 161, .24); color: #d1c9af; background: rgba(16, 20, 27, .62); font: 8px ui-monospace, SFMono-Regular, Consolas, monospace; letter-spacing: .06em; }
+.spherex-credit { display: flex; align-items: center; gap: 8px; width: fit-content; margin-top: 35px; color: #b5c8c4; font-size: 9px; line-height: 1.6; }
+.spherex-credit:hover { color: #e2f5ed; }
+.cosmos-index { position: absolute; right: max(36px, calc((100vw - 1180px) / 2)); bottom: 25px; color: rgba(218, 228, 222, .72); font: 7px ui-monospace, SFMono-Regular, Consolas, monospace; letter-spacing: .12em; }
+.ai-intro { border-bottom: 1px solid var(--line); }
+.ai-intro-grid { display: grid; grid-template-columns: 1fr .85fr; gap: clamp(45px, 10vw, 140px); align-items: start; }
+.ai-intro-grid h2 { max-width: 570px; }
+.ai-intro-copy { padding-top: 30px; }
+.ai-intro-copy p, .ai-readiness-copy > p:not(.eyebrow) { color: #a2adaf; font-size: 12px; line-height: 1.85; }
+.ai-intro-copy .text-link { margin-top: 14px; }
+.ai-stage-grid { display: grid; grid-template-columns: repeat(3, 1fr); border: 1px solid var(--line); }
+.ai-stage-card { min-height: 260px; padding: 23px; border-right: 1px solid var(--line); background: rgba(9, 15, 23, .48); }
+.ai-stage-card:last-child { border-right: 0; }
+.ai-stage-number { color: #829492; font: 7px ui-monospace, SFMono-Regular, Consolas, monospace; letter-spacing: .12em; }
+.ai-stage-icon { display: grid; width: 43px; height: 43px; place-items: center; margin: 20px 0 17px; border: 1px solid rgba(161, 210, 202, .22); color: #a3d5ce; background: rgba(130, 189, 185, .06); }
+.ai-stage-card h3 { margin: 0 0 9px; color: #dce3dd; font: 400 21px/1.25 var(--serif); }
+.ai-stage-card p { min-height: 57px; margin: 0 0 16px; color: #98a3a7; font-size: 10px; line-height: 1.7; }
+.ai-readiness-section { border-block: 1px solid var(--line); background: rgba(15, 21, 31, .37); }
+.ai-readiness-grid { display: grid; grid-template-columns: 1fr .9fr; gap: clamp(45px, 10vw, 130px); align-items: center; }
+.ai-readiness-copy h2 { margin: 20px 0 14px; color: #e1e7e1; font: 400 clamp(36px, 4vw, 50px)/1.1 var(--serif); }
+.ai-readiness-copy h2 span { color: #a6cbc5; font-style: italic; }
+.ai-readiness-copy .text-link { margin-top: 17px; }
+.ai-status-list { border-top: 1px solid rgba(190, 210, 213, .15); }
+.ai-status-list > div { min-height: 62px; display: grid; grid-template-columns: 22px 1fr auto; gap: 11px; align-items: center; border-bottom: 1px solid rgba(190, 210, 213, .15); color: #a4d5cc; }
+.ai-status-list span { color: #bbc7c2; font-size: 10px; line-height: 1.5; }
+.ai-status-list b { color: #8eaaa4; font: 7px ui-monospace, SFMono-Regular, Consolas, monospace; letter-spacing: .06em; text-align: right; }
+.ai-status-list > div:last-child { color: #baac86; }
+.ai-status-list > div:last-child b { color: #bcae88; }
+.ai-final-note { display: flex; align-items: center; gap: 12px; margin-bottom: 88px; padding: 18px 20px; border: 1px solid rgba(194, 211, 222, .13); color: #a6d9d1; background: rgba(14, 20, 29, .55); }
+.ai-final-note p { flex: 1; margin: 0; color: #aab6b2; font-size: 10px; line-height: 1.6; }
+.ai-final-note .text-link { white-space: nowrap; }
+
+/* Team delivery summary */
+.team-work-section { border-block: 1px solid var(--line); background: rgba(15, 21, 31, .37); }
+.team-work-grid { display: grid; grid-template-columns: repeat(3, 1fr); border: 1px solid var(--line); }
+.team-work-card { min-height: 225px; padding: 23px; border-right: 1px solid var(--line); background: rgba(9, 15, 23, .45); }
+.team-work-card:last-child { border-right: 0; }
+.team-work-icon { display: grid; width: 40px; height: 40px; place-items: center; margin-bottom: 17px; border: 1px solid rgba(161, 210, 202, .2); color: #a3d5ce; background: rgba(130, 189, 185, .06); }
+.team-work-card .micro-label { color: #869b98; }
+.team-work-card h3 { margin: 10px 0 9px; color: #dce3dd; font: 400 21px/1.25 var(--serif); }
+.team-work-card p { margin: 0; color: #98a3a7; font-size: 10px; line-height: 1.75; }
+.team-next-note { display: flex; align-items: center; gap: 11px; margin-top: 16px; padding: 16px 18px; border: 1px solid rgba(194, 211, 222, .12); background: rgba(9, 14, 22, .42); }
+.team-next-note > .status-dot { flex: 0 0 auto; }
+.team-next-note p { flex: 1; margin: 0; color: #9ca8aa; font-size: 10px; line-height: 1.7; }
+.team-next-note .text-link { white-space: nowrap; }
+
+@media (max-width: 980px) {
+  .challenge-grid { gap: 40px; }
+  .ai-cosmos-hero { min-height: 570px; }
+  .team-work-card, .ai-stage-card { padding: 19px; }
+}
+@media (max-width: 700px) {
+  .challenge-grid, .ai-intro-grid, .ai-readiness-grid { grid-template-columns: 1fr; gap: 26px; }
+  .challenge-heading h2, .ai-intro-grid h2 { font-size: 36px; }
+  .challenge-panel { padding: 21px 18px; }
+  .challenge-panel > p { margin: 20px 0; font-size: 23px; }
+  .challenge-facts { grid-template-columns: 1fr; gap: 13px; padding-top: 16px; }
+  .challenge-facts > div { display: grid; grid-template-columns: 105px 1fr; gap: 10px; align-items: baseline; }
+  .model-stage { height: 490px; }
+  .model-stage-topline { inset: 17px 15px auto; }
+  .model-tabs { top: 59px; left: 15px; right: 15px; gap: 6px; }
+  .model-tab { flex: 1; min-height: 34px; gap: 5px; padding-inline: 7px; font-size: 7px; }
+  .three-model-host { inset: 100px 1% 117px; }
+  .viewer-controls { right: auto; left: 16px; bottom: 77px; gap: 6px; font-size: 7px; }
+  .model-stage-bottom { inset: auto 15px 15px; }
+  .model-stage-bottom h3 { font-size: 16px; }
+  .model-stage-bottom > p { max-width: 135px; font-size: 7px; }
+  .ai-cosmos-hero { min-height: 650px; align-items: flex-end; }
+  .ai-cosmos-image { background-position: 53% center; }
+  .ai-cosmos-shade { background: linear-gradient(0deg, rgba(5, 9, 17, .97) 2%, rgba(5, 10, 17, .83) 48%, rgba(7, 12, 20, .28) 100%); }
+  .ai-cosmos-content { padding-block: 120px 100px; }
+  .ai-cosmos-content h1 { font-size: clamp(52px, 14vw, 70px); }
+  .ai-cosmos-content .hero-description { font-size: 12px; }
+  .spherex-credit { max-width: 290px; align-items: flex-start; margin-top: 25px; font-size: 8px; }
+  .cosmos-index { right: 19px; bottom: 14px; font-size: 6px; }
+  .ai-intro-copy { padding-top: 0; }
+  .ai-stage-grid, .team-work-grid { grid-template-columns: 1fr; }
+  .ai-stage-card, .team-work-card { min-height: 0; border-right: 0; border-bottom: 1px solid var(--line); padding: 21px; }
+  .ai-stage-card:last-child, .team-work-card:last-child { border-bottom: 0; }
+  .ai-stage-icon { margin-block: 15px 12px; }
+  .ai-stage-card p { min-height: 0; }
+  .ai-readiness-grid { gap: 32px; }
+  .ai-status-list > div { grid-template-columns: 20px 1fr; gap: 9px; padding-block: 11px; }
+  .ai-status-list b { grid-column: 2; text-align: left; }
+  .ai-final-note { align-items: flex-start; flex-wrap: wrap; margin-bottom: 65px; padding: 16px; }
+  .ai-final-note p { flex-basis: calc(100% - 32px); }
+  .ai-final-note .text-link { margin-left: 29px; }
+  .team-next-note { align-items: flex-start; flex-wrap: wrap; padding: 15px; }
+  .team-next-note p { flex-basis: calc(100% - 26px); }
+  .team-next-note .text-link { margin-left: 26px; }
+}
+@media (max-width: 390px) {
+  .model-tab { font-size: 6px; }
+  .viewer-controls { font-size: 6px; }
+  .model-stage-bottom > p { max-width: 120px; }
+}
+.ai-page { position: relative; isolation: isolate; }
+.ai-page::before { content: ""; position: absolute; z-index: -1; inset: 0; pointer-events: none; background-image: linear-gradient(180deg, rgba(7, 12, 20, .42), rgba(7, 12, 20, .76)), url("https://d2pn8kiwq2w21t.cloudfront.net/original_images/e1a-SPHEREx_all_sky_stars_and_gas-dust.jpg"); background-size: cover; background-position: center top; }
+.ai-roadmap { background: rgba(9, 14, 22, .62); }
+.page-loading { min-height: 60vh; display: grid; place-items: center; color: #a9cbc6; font-size: 12px; letter-spacing: .1em; }

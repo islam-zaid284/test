@@ -1,10 +1,11 @@
+import { lazy, Suspense, useEffect } from "react";
 import { Route, Routes, useLocation } from "react-router-dom";
-import { useEffect } from "react";
 import SiteShell from "./components/layout/SiteShell.jsx";
-import Home from "./pages/Home.jsx";
-import Project from "./pages/Project.jsx";
-import Team from "./pages/Team.jsx";
-import Telescope from "./pages/Telescope.jsx";
+
+const Home = lazy(() => import("./pages/Home.jsx"));
+const Telescope = lazy(() => import("./pages/Telescope.jsx"));
+const AIModel = lazy(() => import("./pages/AIModel.jsx"));
+const Team = lazy(() => import("./pages/Team.jsx"));
 
 function ScrollToTop() {
   const { pathname } = useLocation();
@@ -19,13 +20,15 @@ export default function App() {
     <>
       <ScrollToTop />
       <SiteShell>
-        <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/project" element={<Project />} />
-          <Route path="/team" element={<Team />} />
-          <Route path="/telescope" element={<Telescope />} />
-          <Route path="*" element={<Home />} />
-        </Routes>
+        <Suspense fallback={<div className="page-loading" role="status">Opening project page…</div>}>
+          <Routes>
+            <Route path="/" element={<Home />} />
+            <Route path="/telescope" element={<Telescope />} />
+            <Route path="/ai-model" element={<AIModel />} />
+            <Route path="/team" element={<Team />} />
+            <Route path="*" element={<Home />} />
+          </Routes>
+        </Suspense>
       </SiteShell>
     </>
   );

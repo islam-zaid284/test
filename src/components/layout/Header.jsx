@@ -3,9 +3,9 @@ import { ArrowUpRight, Menu, X } from "lucide-react";
 import { NavLink, Link } from "react-router-dom";
 
 const links = [
-  { to: "/project", label: "The project" },
-  { to: "/team", label: "The team" },
-  { to: "/telescope", label: "Telescope" },
+  { to: "/telescope", label: "WTPM Telescope" },
+  { to: "/ai-model", label: "AI Model" },
+  { to: "/team", label: "The Team" },
 ];
 
 export default function Header() {
@@ -27,11 +27,11 @@ export default function Header() {
           {open ? <X size={20} /> : <Menu size={20} />}
         </button>
         <nav className={`main-nav ${open ? "is-open" : ""}`} aria-label="Main navigation">
-          <NavLink end to="/" onClick={() => setOpen(false)}>Overview</NavLink>
+          <NavLink end to="/" onClick={() => setOpen(false)}>Home</NavLink>
           {links.map((link) => (
             <NavLink key={link.to} to={link.to} onClick={() => setOpen(false)}>{link.label}</NavLink>
           ))}
-          <Link className="nav-note" to="/project" onClick={() => setOpen(false)}>
+          <Link className="nav-note" to="/" onClick={() => setOpen(false)}>
             <span className="status-dot" /> A project in progress <ArrowUpRight size={13} />
           </Link>
         </nav>
